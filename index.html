@@ -1,0 +1,136 @@
+<html ng-app="atm">
+
+<head>
+    <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+<link rel="stylesheet" href="atm.css">    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+ <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <script src="atm.js"></script>
+</head>
+
+<body ng-controller="atmCtrl as atm">
+    
+    <md-content>
+
+    <div layout="row"  id="atm">
+    <!-- ENTER PIN PAGE -->
+    <div flex="40" layout-padding>
+        <div id="type">
+            <div layout="row" layout-align="center">
+                <md-button class="md-fab md-mini" ng-click="atm.addnumber(1)">1</md-button>
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(2)">2</md-button>
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(3)">3</md-button>
+            </div>
+            <div layout="row" layout-align="center">
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(4)">4</md-button>
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(5)">5</md-button>
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(6)">6</md-button>
+            </div>
+            <div layout="row" layout-align="center">
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(7)">7</md-button>
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(8)">8</md-button>
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(9)">9</md-button>
+            </div>    
+            <div layout="row" layout-align="center">
+                <md-button class="md-fab md-mini" ng-disabled="true" >*</md-button>    
+                <md-button class="md-fab md-mini"  ng-click="atm.addnumber(0)">0</md-button>
+                <md-button class="md-fab md-mini" ng-click="atm.clearpin()" >C</md-button>    
+            </div>    
+        </div>
+        <footer>
+            <div class="row" ng-if="atm.running" layout-align="center">
+                <md-button class="md-raised" ng-click="atm.abort()">ABORT</md-button>
+                <md-button class="md-raised" ng-click="atm.back()">BACK</md-button>
+            </div>
+        </footer>
+    </div>
+    
+    <div flex="60" layout-padding>
+    <div id="display">
+        
+        <header>        
+            <h4>{{atm.page.name}}</h4>
+            <p>{{atm.page.description}}</p>
+        </header>
+
+        <!-- WELCOME PAGE -->
+        <main>
+            <section ng-if="atm.page.id=='welcome'">
+                <md-button class="md-raised" ng-click="atm.cardinserted()">push to insert card</md-button>
+            </section>
+            <div ng-if="atm.enablepin">
+                <div>{{atm.pinmessage}}</div>
+                <div><span>PIN:</span><span>{{atm.maskpin}}</span></div>
+                <md-button ng-if="atm.enableproceedpin" class="md-raised" ng-click="atm.pinproceed()">proceed</md-button>
+            </div>
+            <div ng-if="atm.enableamount">
+                <div layout="row" layout-align="center">
+                    <md-button class="md-raised" ng-click="atm.setamount(50)">50</md-button>
+                    <md-button class="md-raised" ng-click="atm.setamount(100)">100</md-button>
+                </div>
+                <div layout="row" layout-align="center">
+                    <md-button class="md-raised" ng-click="atm.setamount(150)">150</md-button>
+                    <md-button class="md-raised" ng-click="atm.setamount(200)">200</md-button>
+                </div>
+                <div layout="row" layout-align="center">
+                    <md-button class="md-raised" ng-click="atm.setamount(250)">250</md-button>
+                    <md-button class="md-raised" ng-click="atm.setamount()">OTHER</md-button>
+                </div>
+            </div>
+            <div ng-if="atm.enablecustomamount">
+                <div>Enter a custom amount</div>
+            </div>
+            <div ng-if="atm.enableamount">
+                <div>amount: {{atm.amount}}</div>
+                <md-button ng-if="atm.amount" class="md-raised" ng-click="atm.clearamount()">clear</md-button>
+                <md-button ng-if="atm.amount" class="md-raised" ng-click="atm.amountok()">Ok proceed</md-button>
+            </div>
+            
+            <div ng-if="atm.enablegetcard">
+                <div>Operation succeeded, please get back your card</div>
+                <md-button class="md-raised" ng-click="atm.getcard(true)">get card</md-button>
+            </div>
+
+            <div ng-if="atm.aborted">
+                <div>Operation aborted, please get back your card</div>
+                <md-button class="md-raised" ng-click="atm.getcard(false)">get card</md-button>
+            </div>
+            
+            <div ng-if="atm.enablegetmoney">
+                <div>Operation succeeded, get you money</div>
+                <md-button class="md-raised" ng-click="atm.getmoney()">get money</md-button>
+            </div>
+            
+            <div ng-if="atm.enablethankyou">
+                <div>Thank you for using our services</div>
+            </div>
+            
+        </main>
+
+
+        
+    </div>
+
+</div>  
+    
+        
+    </div>    
+
+    
+    <div style="display:none" id="spinner">
+        <div id="spinnerContent">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+    </div>
+        
+    </md-content>
+</body>
+
+</html>

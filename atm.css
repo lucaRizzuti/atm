@@ -1,0 +1,33 @@
+#spinner {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, .7);
+    z-index: 9999;
+    height: 100%;
+}
+
+#spinnerContent {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#atm {
+    width:640px;
+    margin:auto;
+    background-color: beige;
+}
+#type {
+    margin:auto;
+}
+#display {
+    margin:auto;
+    background-color:azure;
+    
+        height: 320px;
+
+}
